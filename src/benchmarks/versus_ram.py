@@ -14,7 +14,7 @@ except ImportError as exc:
     raise SystemExit("matplotlib is required: pip install matplotlib") from exc
 
 
-BENCHMARK_NAME = "bench_hashes"
+BENCHMARK_NAME = "bench_bloom_sizes"
 THREAD_VALUE = 16 #TODO: not forget to change it on bigger mahcine
 K_VALUE = 31
 #RAM_GB = 32
