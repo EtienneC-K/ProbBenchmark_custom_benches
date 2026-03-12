@@ -295,6 +295,8 @@ def main() -> None:
     bloom_rs_rows: list[dict[str, object]] = []
     generic_rows: list[dict[str, object]] = []
     for t in THREAD_VALUES:
+        print(f"moving to {t} threads")
+        print("launched fastbloom")
         metrics_list = [
             run_filter(root, build_fastbloom_command(args.index_file, args.query_file, t))
             for _ in range(REPEATS)
@@ -312,6 +314,7 @@ def main() -> None:
             **metrics,
         })
 
+        print("launched classic")
         metrics_list = [
             run_filter(root, build_classic_command(args.index_file, args.query_file, t))
             for _ in range(REPEATS)
@@ -329,6 +332,7 @@ def main() -> None:
             **metrics,
         })
 
+        print("launched roaring")
         metrics_list = [
             run_filter(root, build_roaring_command(args.index_file, args.query_file, t))
             for _ in range(REPEATS)
@@ -346,6 +350,7 @@ def main() -> None:
             **metrics,
         })
 
+        print("launched bf_rust")
         metrics_list = [
             run_filter(root, build_bf_rust_command(args.index_file, args.query_file, t))
             for _ in range(REPEATS)
@@ -363,6 +368,7 @@ def main() -> None:
             **metrics,
         })
 
+        print("launched blomfx")
         metrics_list = [
             run_filter(root, build_bloomfx_command(args.index_file, args.query_file, t))
             for _ in range(REPEATS)
@@ -380,6 +386,7 @@ def main() -> None:
             **metrics,
         })
 
+        print("launched bloom_rs")
         metrics_list = [
             run_filter(root, build_bloom_rs_command(args.index_file, args.query_file, t))
             for _ in range(REPEATS)
@@ -397,6 +404,7 @@ def main() -> None:
             **metrics,
         })
 
+        print("launched generic")
         metrics_list = [
             run_filter(root, build_generic_command(args.index_file, args.query_file, t))
             for _ in range(REPEATS)
@@ -413,6 +421,24 @@ def main() -> None:
             "h": H_VALUE,
             **metrics,
         })
+
+        #to save progress after each loop in case i have to cut him short
+        timestamp = datetime.now().strftime("%Y%m%d-%H%M%S")
+        out_dir = results_dir()
+        fastbloom_tsv_path = out_dir / f"{BENCHMARK_NAME}-{timestamp}-fastbloom.tsv"
+        classic_tsv_path = out_dir / f"{BENCHMARK_NAME}-{timestamp}-classicbloom.tsv"
+        roaring_tsv_path = out_dir / f"{BENCHMARK_NAME}-{timestamp}-roaring.tsv"
+        bf_rust_tsv_path = out_dir / f"{BENCHMARK_NAME}-{timestamp}-bf_rust.tsv"
+        bloomfx_tsv_path = out_dir / f"{BENCHMARK_NAME}-{timestamp}-bloomfx.tsv"
+        bloom_rs_tsv_path = out_dir / f"{BENCHMARK_NAME}-{timestamp}-bloom_rs.tsv"
+        generic_tsv_path = out_dir / f"{BENCHMARK_NAME}-{timestamp}-generic.tsv"
+        write_tsv(fastbloom_rows, fastbloom_tsv_path)
+        write_tsv(classic_rows, classic_tsv_path)
+        write_tsv(roaring_rows ,roaring_tsv_path)
+        write_tsv(bf_rust_rows ,bf_rust_tsv_path)
+        write_tsv(bloomfx_rows ,bloomfx_tsv_path)
+        write_tsv(bloom_rs_rows ,bloom_rs_tsv_path)
+        write_tsv(generic_rows ,generic_tsv_path)
 
     timestamp = datetime.now().strftime("%Y%m%d-%H%M%S")
     out_dir = results_dir()

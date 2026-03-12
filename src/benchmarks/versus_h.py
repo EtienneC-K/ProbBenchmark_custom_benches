@@ -294,6 +294,7 @@ def main() -> None:
     bloom_rs_rows: list[dict[str, object]] = []
     generic_rows: list[dict[str, object]] = []
     for h in H_VALUES:
+        print(f"starting h={h}")
         metrics_list = [
             run_filter(root, build_fastbloom_command(args.index_file, args.query_file, h))
             for _ in range(REPEATS)
@@ -310,6 +311,7 @@ def main() -> None:
             "h": h,
             **metrics,
         })
+        print("done fastbloom")
 
         metrics_list = [
             run_filter(root, build_classic_command(args.index_file, args.query_file, h))
@@ -327,6 +329,7 @@ def main() -> None:
             "h": h,
             **metrics,
         })
+        print("done classicbloom")
 
         metrics_list = [
             run_filter(root, build_roaring_command(args.index_file, args.query_file, h))
@@ -344,6 +347,7 @@ def main() -> None:
             "h": h,
             **metrics,
         })
+        print("done roaring")
 
         metrics_list = [
             run_filter(root, build_bf_rust_command(args.index_file, args.query_file, h))
@@ -361,6 +365,7 @@ def main() -> None:
             "h": h,
             **metrics,
         })
+        print("done bf_rust")
 
         metrics_list = [
             run_filter(root, build_bloomfx_command(args.index_file, args.query_file, h))
@@ -378,6 +383,7 @@ def main() -> None:
             "h": h,
             **metrics,
         })
+        print("done bloomfx")
 
         metrics_list = [
             run_filter(root, build_bloom_rs_command(args.index_file, args.query_file, h))
@@ -395,6 +401,7 @@ def main() -> None:
             "h": h,
             **metrics,
         })
+        print("done bloom_rs")
 
         metrics_list = [
             run_filter(root, build_generic_command(args.index_file, args.query_file, h))
@@ -412,6 +419,7 @@ def main() -> None:
             "h": h,
             **metrics,
         })
+        print("done generic_bloom")
 
     timestamp = datetime.now().strftime("%Y%m%d-%H%M%S")
     out_dir = results_dir()
