@@ -7,6 +7,7 @@ import statistics
 import subprocess
 from datetime import datetime
 from pathlib import Path
+from math import log2
 
 try:
     import matplotlib.pyplot as plt
@@ -20,7 +21,7 @@ K_VALUE = 31
 #RAM_GB = 32
 H_VALUE = 4
 REPEATS = 1
-BLOOM_BITS_VALUES = [2**33, 2**34, 2**35, 2**36, 2**37, 2**38] #TODO: not forget to change it on the other machine to fill 32Go
+BLOOM_BITS_VALUES = [2**25, 2**26, 2**27, 2**28, 2**29, 2**30, 2**31, 2**32, 2**33, 2**34, 2**35, 2**36, 2**37, 2**38] #TODO: not forget to change it on the other machine to fill 32Go
 BUILD_FIRST = True
 USE_INDEXED_FILE_FLAG = False
 EXTRA_ARGS: list[str] = []
@@ -273,6 +274,7 @@ def main() -> None:
     bloom_rs_rows: list[dict[str, object]] = []
     generic_rows: list[dict[str, object]] = []
     for b_bits in BLOOM_BITS_VALUES:
+        print(f"next loop, with {log2(b_bits)}")
         metrics_list = [
             run_filter(root, build_fastbloom_command(args.index_file, args.query_file, b_bits))
             for _ in range(REPEATS)
